@@ -1,0 +1,16 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: hello-server
+  namespace: devops
+  labels:
+    app: hello-server
+spec:
+  selector:                  
+    app: hello-server
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
