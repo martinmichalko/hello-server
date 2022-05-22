@@ -8,12 +8,19 @@ spec:
   source:
     type: Git
     git:
-      uri: https://github.com/monodot/container-up
+      uri: https://github.com/martinmichalko/hello-server.git
     contextDir: /
   strategy:
     type: Docker                      
     dockerStrategy:
       dockerfilePath: Dockerfile    # Look for Dockerfile in: gitUri/contextDir/dockerfilePath
+      buildArgs:
+        - name: HTTP_PROXY
+          value: "http://172.16.10.8:3128/"
+        - name: HTTPS_PROXY
+          value: "http://172.16.10.8:3128/"
+        - name: NO_PROXY
+          value: "127.0.0.1,localhost,10.123.0.0/16,172.16.0.0/16,.demo.sk,mate.company,.testing,win-6bj0hd0j3jk"
   output:
     to:
       kind: ImageStreamTag
