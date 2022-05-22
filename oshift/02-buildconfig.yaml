@@ -2,30 +2,32 @@ kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
   namespace: devops
-  name: hello-server 
+  name: hello-server
+  labels:
+    app: hello-server
 spec:
-  runPolicy: "Serial" 
-  triggers: 
-    -
-      type: "GitHub"
-      github:
-        secret: "secret101"
-    - type: "Generic"
-      generic:
-        secret: "secret101"
-    -
-      type: "ImageChange"
+  runPolicy: Serial 
   source: 
     git:
-      uri: "https://github.com/openshift/ruby-hello-world"
-  strategy: 
-    sourceStrategy:
-      from:
-        kind: "ImageStreamTag"
-        name: "ruby-20-centos7:latest"
+      uri: "http://win-6bj0hd0j3jk/DefaultCollection/hello-server/_git/hello-server"
+      ref: v1
+    type: Git
+    sourceSecret:
+      name: devops-runner-token
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+      buildArgs:
+        - name: HTTP_PROXY
+          value: "http://172.16.10.8:3128/"
+        - name: HTTPS_PROXY
+          value: "http://172.16.10.8:3128/"
+        - name: NO_PROXY
+          value: "127.0.0.1,localhost,10.123.0.0/16,172.16.0.0/16,.demo.sk,mate.company,.testing"
+      type: Docker
   output: 
     to:
       kind: "ImageStreamTag"
-      name: "origin-ruby-sample:latest"
-  postCommit: 
-      script: "bundle exec rake test"
+      name: "hello-server:latest"
+  triggers:
+    - type: ConfigChange
