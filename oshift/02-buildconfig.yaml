@@ -6,7 +6,11 @@ metadata:
   labels:
     app: hello-server
 spec:
-  runPolicy: Serial 
+  hostAliases:
+    - hostnames: 
+      - "win-6bj0hd0j3jk"
+      ip: "10.123.13.105"
+  runPolicy: Serial
   source: 
     git:
       uri: "http://win-6bj0hd0j3jk/DefaultCollection/hello-server/_git/hello-server"
@@ -23,7 +27,7 @@ spec:
         - name: HTTPS_PROXY
           value: "http://172.16.10.8:3128/"
         - name: NO_PROXY
-          value: "127.0.0.1,localhost,10.123.0.0/16,172.16.0.0/16,.demo.sk,mate.company,.testing"
+          value: "127.0.0.1,localhost,10.123.0.0/16,172.16.0.0/16,.demo.sk,mate.company,.testing,win-6bj0hd0j3jk"
       type: Docker
   output: 
     to:

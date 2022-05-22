@@ -1,0 +1,20 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: hello-server
+  labels:
+    app: hello-server
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/monodot/container-up
+    contextDir: /
+  strategy:
+    type: Docker                      
+    dockerStrategy:
+      dockerfilePath: Dockerfile    # Look for Dockerfile in: gitUri/contextDir/dockerfilePath
+  output:
+    to:
+      kind: ImageStreamTag
+      name: hello-server:latest
